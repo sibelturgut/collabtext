@@ -8,7 +8,7 @@ class TextEditor:
         self.content = ""
         self.retrieve_file_content()
 
-    def retrieve_file_content(self, file_path):
+    def retrieve_file_content(self, file_path= None):
         if self.file_path is not None:
             try:
                 with open(self.file_path, "r", encoding="utf-8") as f:
