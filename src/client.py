@@ -29,8 +29,8 @@ class Client:
             threading.Thread(target=self.listen_to_server, daemon=True).start()
             self.ui.run()
         except Exception as e:
-            ui.show_error(f"Could not connect to server: {e}")
-            self.running = False
+            ui.show_error(f"Could not connect to server: {e}") #UI has error pop ups.
+            self.running = False 
 
     def request_initial_content(self):
         try:
