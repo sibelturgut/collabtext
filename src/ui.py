@@ -10,7 +10,7 @@ class TextEditorUI:
         self.root = root
         self.editor = editor
         self.is_server = is_server
-        self.locked = False
+        self.locked = not is_server  # server starts unlocked; clients start locked
 
         self.root.title("Collaborative Text Editor")
 
@@ -34,9 +34,8 @@ class TextEditorUI:
         file_menu.add_separator()
         file_menu.add_command(label="Exit", command=self.root.quit)
 
-        # Server or client menu
+        # Lock control
         if self.is_server:
-            self.menu.add_command(label="Broadcast Change", command=self.broadcast_change)
             self.menu.add_command(label="Release Lock", command=self.release_lock)
         else:
             self.menu.add_command(label="Request Lock", command=self.lock_request)
@@ -57,19 +56,18 @@ class TextEditorUI:
         self.editor.save_file_content()
 
     def on_text_change(self, event=None):
-        if not self.locked:
-            self.editor.content = self.text_area.get("1.0", "end")
-            if self.is_server:
-                self.broadcast_change()
-        else:
+        if self.locked:
             Messagebox.show_info("Document is locked. Cannot edit.", title="Lock Active")
             self.text_area.delete("1.0", "end")
             self.text_area.insert("1.0", self.editor.content)
+        else:
+            self.editor.content = self.text_area.get("1.0", "end")
+            self.send_change_to_server_or_clients(self.editor.content)
         self.text_area.edit_modified(False)
 
-    def broadcast_change(self):
-        # Placeholder: Integrate with server.py
-        print("[DEBUG] Broadcasting change to all clients...")
+    def send_change_to_server_or_clients(self, content):
+        # Replace with real communication logic
+        print("[DEBUG] Sending content update to remote participants...")
 
     def display_change(self, new_content):
         self.text_area.delete("1.0", "end")
@@ -77,11 +75,14 @@ class TextEditorUI:
         self.editor.content = new_content
 
     def lock_request(self):
-        # Placeholder: Send lock request to server
+        # Replace with client-server communication
         print("[DEBUG] Lock request sent to server...")
+        # Simulate lock granted
+        self.locked = False
+        print("[DEBUG] Lock acquired.")
 
     def release_lock(self):
-        self.locked = False
+        self.locked = True
         print("[DEBUG] Lock released.")
 
 
@@ -94,4 +95,3 @@ def App(is_server=False, theme="flatly"):
 
 if __name__ == "__main__":
     App(is_server=False, theme="solar")
-  # Set True if testing as server
