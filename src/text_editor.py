@@ -23,7 +23,6 @@ class TextEditor:
 
     def save_file_content(self):
         #when users stop using the app, save the file content back to original file on pc of server user
-        #if a client user wants to save, create a new file and save the content inside
         if self.file_path is None:
             self.file_path = input("No file path provided. Please enter a path to save the file: ")
 
